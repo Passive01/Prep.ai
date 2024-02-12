@@ -4,6 +4,8 @@ import './App.css'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import AskQuestions from './AskQuestions';
+
 
 
 
@@ -44,17 +46,20 @@ function App() {
     }
   };
 
+
   return (
     <>
       <h2>Enter YouTube URL</h2>
+      
       <TextField id="outlined-basic" label="Youtube URL" variant="outlined" value={youtubeLink} onChange={(e)=>setYoutubeLink(e.target.value)}/>
       <Button variant="outlined" style={{margin: "12px"}} onClick={handlePostRequest}>Send</Button>
       {youtubeContent ? (
         <div>
           <p>/ - COMPLETE - /</p>
-          <Button variant="outlined" style={{margin: "12px"}} onClick={handlePostRequest}>Ask Questions</Button>
+          {/* <AskQuestions /> */}
           <Button variant="outlined" style={{margin: "12px"}} onClick={handleSummarizeRequest}>Summarize</Button>
           <Button variant="outlined" style={{margin: "12px"}} onClick={handlePostRequest}>Take Exam</Button>
+          <AskQuestions />
           <div>{youtubeSummary && youtubeSummary}</div>
         </div>
         
