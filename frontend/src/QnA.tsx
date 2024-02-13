@@ -16,8 +16,6 @@ import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import axios from 'axios';
 import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-
 
 
 
@@ -32,39 +30,30 @@ const Transition = React.forwardRef(function Transition(
   });
 
 
-const AskQuestions = () => {
+const QnA = () => {
     const [open, setOpen] = useState(false)
-    const [question, setQuestion] = useState("")
     const [answer, setAnswer] = useState("")
-    const [sendQuestion, setSendQuestion] = useState("")
-    const [chat, setChat] = useState<{question: String; answer: String }[]>([]);
+    const [questions, setQuestions] = useState([])
 
     const handleClickOpen = () => {
         setOpen(true);
     };
 
-    const handleClose = () => {
-    setOpen(false);
+    const handleClose = async () => {
+      setOpen(false);
+      const response = await axios.post('http://127.0.0.1:8000/exam' 
+            // Your POST data goes here
+      );  
+      console.log(response);
     };
 
     const handleQuestionRequest = async () => {
         try {
-          setSendQuestion(question);
-          const response = await axios.post('http://127.0.0.1:8000/askquestions', {
-            // Your POST data goes here
-            question
-          });
+          
 
-          console.log(response);
-          setAnswer(response.data);
-
-          setChat(prevChat => [
-            ...prevChat,
-            {
-              question: question,
-              answer: response.data
-            }
-          ]);
+          //setAnswer(response.data);
+    
+    
         } catch (error) {
           console.error('Error making POST request:', error);
         }
@@ -72,7 +61,7 @@ const AskQuestions = () => {
 
   return (
     <div>
-        <Button variant="outlined" style={{margin: "12px"}} onClick={handleClickOpen}>Ask Questions</Button>
+        <Button variant="outlined" style={{margin: "12px"}} onClick={handleClickOpen}>Take an Exam</Button>
         <Dialog
             fullScreen
             open={open}
@@ -95,24 +84,17 @@ const AskQuestions = () => {
                 </Toolbar>
             </AppBar>
             <div style={{display: 'flex', justifyContent: "center"}}>
-              <Card variant="outlined" style={{width: "800px",  height: "370px", margin: '10px', overflow: 'auto'}} >
-                {chat.map((chatEntry, index) => (
-                  <div key={index} style={{ margin: "20px" }}>
-                    <Typography variant='h6'><b>You: </b>{chatEntry.question}</Typography>
-                    {sendQuestion && (
-                      <Typography variant='h6'><b>Prep.a!: </b>{chatEntry.answer}</Typography>
-                    )}
-                  </div>
-                ))}
+              <Card variant="outlined" style={{width: "900px", margin: "10px"}}>
+                  {}
               </Card>
             </div>
-            
+
             <TextField
                 id="standard-name"
                 placeholder='Ask Questions...'
                 style={{marginTop: 'auto', padding: '20px', backgroundColor: "#f0f0f0" }}
-                value={question} 
-                onChange={(e)=>setQuestion(e.target.value)}
+                value={answer} 
+                onChange={(e)=>setAnswer(e.target.value)}
                 InputProps={{endAdornment: <Button variant="contained"  endIcon={<SendIcon />} style={{width:"6px" }} onClick={handleQuestionRequest} />}}
             />
         </Dialog>
@@ -120,4 +102,4 @@ const AskQuestions = () => {
   )
 }
 
-export default AskQuestions
+export default QnA
